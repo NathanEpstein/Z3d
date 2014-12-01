@@ -2,14 +2,12 @@
 // axis labels
 // size data (DONE)
 // classification data
-// plot size
-// create canvas
+// plot size (DONE)
+// create canvas (DONE)
 // return element
 // speed improvement?
 
 var plot = function(arrX, arrY,arrZ,config) {
-
-  // var canvas =
 
   if (typeof config === 'undefined') config = {};
 
@@ -62,17 +60,22 @@ var plot = function(arrX, arrY,arrZ,config) {
   var renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0xffffff);
   renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild(renderer.domElement);
+  //document.body.appendChild(renderer.domElement);
 
-  // if (typeof config.elementID === 'undefined'){
-  //   document.body.appendChild(renderer.domElement);
-  // }
-  // else{
-  //   console.log('config.elementID', config.elementID)
-  //   var element = config.elementID;
-  //   document.getElementById(element).appendChild(renderer.domElement);
-  // }
 
+//determine the renderer.domElement size and DOM element
+  if (typeof config.elementID === 'undefined'){
+    document.body.appendChild(renderer.domElement);
+  }
+  else{
+    document.getElementById(config.elementID).appendChild(renderer.domElement);
+  }
+
+  renderer.domElement.style.width = (typeof config.width === 'undefined') ? '500px' : String(config.width)+'px';
+  renderer.domElement.style.height = (typeof config.height === 'undefined') ? '500px' : String(config.height)+'px';
+
+
+  console.log(renderer.domElement)
 
   //orbit controls
   controls = new THREE.OrbitControls( camera );
