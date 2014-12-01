@@ -6,6 +6,7 @@
 // create canvas (DONE)
 // return element
 // speed improvement?
+// inline orbit controls? (DONE)
 
 var plot = function(arrX, arrY,arrZ,config) {
 
@@ -75,10 +76,8 @@ var plot = function(arrX, arrY,arrZ,config) {
   renderer.domElement.style.height = (typeof config.height === 'undefined') ? '500px' : String(config.height)+'px';
 
 
-  console.log(renderer.domElement)
-
   //orbit controls
-  controls = new THREE.OrbitControls( camera );
+  controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.addEventListener( 'change', render );
 
   //zoom stuff
