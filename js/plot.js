@@ -2,13 +2,14 @@
 // axis labels
 // size data (DONE)
 // classification data
+// coloring for size data (DONE)
 // plot size (DONE)
 // create canvas (DONE)
-// return element
+// return element (DONE)
 // speed improvement?
 // inline orbit controls? (DONE)
 
-var plot = function(arrX, arrY,arrZ,config) {
+var plot3d = function(arrX, arrY,arrZ,config) {
 
   if (typeof config === 'undefined') config = {};
 
@@ -17,7 +18,7 @@ var plot = function(arrX, arrY,arrZ,config) {
       return a-b;
     });
     return newArr;
-  }
+  };
 
   //axis boundaries
   var xMax = arrSort(arrX)[arrX.length - 1];
@@ -88,9 +89,12 @@ var plot = function(arrX, arrY,arrZ,config) {
   animate();
 
   // generate points
-  function sphere(a,b,c,d){
+  var colorObj = (typeof config.size === 'undefined') ? {color:0x000000} : {color:0x999999};
+
+  function point(a,b,c,d){
     var geometry = new THREE.SphereGeometry(d,15,15);
-    var material = new THREE.MeshLambertMaterial( { color: 0x000000 } );
+    var material = new THREE.MeshLambertMaterial(colorObj );
+    console.log(material);
     var sphere = new THREE.Mesh(geometry, material);
     sphere.overdraw = true;
     sphere.position.x = a;
@@ -104,9 +108,9 @@ var plot = function(arrX, arrY,arrZ,config) {
       var size = 0.075 + (config.size[i] - sizeMin)/(sizeMax - sizeMin)*0.5;
     }
     else{
-      var size = 0.075
+      var size = 0.075;
     }
-    scene.add(sphere(arrX[i],arrY[i],arrZ[i],size));
+    scene.add(point(arrX[i],arrY[i],arrZ[i],size));
   });
   //end of point generation
 
@@ -127,7 +131,7 @@ var plot = function(arrX, arrY,arrZ,config) {
 
     var line = new THREE.Line(geometry, material);
     return line;
-  }
+  };
 
   //draw positive axes
   if(xMax > 0) scene.add(liner(xMax,0,0,matPos));
@@ -138,6 +142,16 @@ var plot = function(arrX, arrY,arrZ,config) {
   if(xMin < 0) scene.add(liner(xMin,0,0,matNeg));
   if(yMin < 0) scene.add(liner(0,yMin,0,matNeg));
   if(zMin < 0) scene.add(liner(0,0,zMin,matNeg));
+
+  // axis labels (not complete)
+  var xParam = {
+    size: 10,
+  }
+  var xLab = new THREE.TextGeometry('test',xParam);
+  //scene.add(xLab);
+
+
+
   //end of axes
 
 
@@ -147,5 +161,8 @@ var plot = function(arrX, arrY,arrZ,config) {
     renderer.render(scene,camera);
   }
   render();
+
+  //function should return the DOM element containing the plot
+  return renderer.domElement;
 };
 

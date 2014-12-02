@@ -1,1 +1,0 @@
-console.log(array[2]||3)
