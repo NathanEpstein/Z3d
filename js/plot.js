@@ -2,6 +2,8 @@
 // function to create good point size for all plots
 // axis labels
 // data labels
+// performance issues (DONE)
+
 
 var plot3d = function(arrX, arrY,arrZ,config) {
 
@@ -56,7 +58,6 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   var renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0xffffff);
   renderer.setSize( window.innerWidth, window.innerHeight );
-  //document.body.appendChild(renderer.domElement);
 
 
 //determine the renderer.domElement size and DOM element
@@ -78,12 +79,13 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   //zoom stuff
   function animate(){
     requestAnimationFrame(animate);
+    render();
     controls.update();
   }
   animate();
 
-  // generate points
 
+  // generate points
   function getColorObj(color){
     // is color defined in config?
     if (typeof color === 'undefined'){
@@ -145,6 +147,7 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     geometry.vertices.push(new THREE.Vector3(x, y, z));
 
     var line = new THREE.Line(geometry, material);
+    console.log('this has been called')
     return line;
   };
 
@@ -175,7 +178,7 @@ var plot3d = function(arrX, arrY,arrZ,config) {
 
   //render function
   function render(){
-    requestAnimationFrame(render);
+    //requestAnimationFrame(render);
     renderer.render(scene,camera);
   }
   render();
