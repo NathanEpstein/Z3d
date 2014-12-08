@@ -1,13 +1,7 @@
 // to do:
+// function to create good point size for all plots
 // axis labels
-// size data (DONE)
-// classification data
-// coloring for size data (DONE)
-// plot size (DONE)
-// create canvas (DONE)
-// return element (DONE)
-// speed improvement?
-// inline orbit controls? (DONE)
+// data labels
 
 var plot3d = function(arrX, arrY,arrZ,config) {
 
@@ -89,12 +83,23 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   animate();
 
   // generate points
-  var colorObj = (typeof config.size === 'undefined') ? {color:0x000000} : {color:0x999999};
 
-  function point(a,b,c,d){
-    var geometry = new THREE.SphereGeometry(d,15,15);
-    var material = new THREE.MeshLambertMaterial(colorObj );
-    console.log(material);
+  function getColorObj(color){
+    // is color defined in config?
+    if (typeof color === 'undefined'){
+      var colorObj = (typeof config.size === 'undefined') ? {color:0x000000} : {color:0x999999};
+    }
+    // if not ...
+    else{
+      var colorObj = { color: parseInt('0x'+color) };
+      console.log(colorObj)
+    }
+    return colorObj;
+  }
+
+  function point(a,b,c,size,color){
+    var geometry = new THREE.SphereGeometry(size,15,15);
+    var material = new THREE.MeshLambertMaterial(getColorObj(color));
     var sphere = new THREE.Mesh(geometry, material);
     sphere.overdraw = true;
     sphere.position.x = a;
@@ -103,15 +108,25 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     return sphere;
   }
 
-  arrX.forEach(function(thing,i){
+
+  var baseSize = Math.pow((xMax - xMin) * (yMax - yMin) * (zMax - zMin),1/3)/100;
+  for (var i=0; i<arrX.length;i++){
+    // set size
     if (typeof config.size !== 'undefined'){
-      var size = 0.075 + (config.size[i] - sizeMin)/(sizeMax - sizeMin)*0.5;
+      var size = baseSize + baseSize*8*((config.size[i] - sizeMin)/(sizeMax - sizeMin));
     }
     else{
-      var size = 0.075;
+      var size = baseSize;
     }
-    scene.add(point(arrX[i],arrY[i],arrZ[i],size));
-  });
+    // set color
+    if (typeof config.color !== 'undefined'){
+      var color = config.color[i];
+    }
+    else{
+      var color = undefined;
+    }
+    scene.add(point(arrX[i],arrY[i],arrZ[i],size,color));
+  };
   //end of point generation
 
 
@@ -149,6 +164,9 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   }
   var xLab = new THREE.TextGeometry('test',xParam);
   //scene.add(xLab);
+
+  // axis tickers
+
 
 
 
