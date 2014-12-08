@@ -1,10 +1,3 @@
-// to do:
-// function to create good point size for all plots
-// axis labels
-// data labels
-// performance issues (DONE)
-
-
 var plot3d = function(arrX, arrY,arrZ,config) {
 
   if (typeof config === 'undefined') config = {};
@@ -49,10 +42,10 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   scene.add( spotLight );
 
   //camera stuff
-  var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  camera.position.x = 1.25 * Math.max(xMax, -xMin);
-  camera.position.y = 1.25 * Math.max(yMax, -yMin);
-  camera.position.z = 1.25 * Math.max(zMax, -zMin);
+  var camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  camera.position.x = 1.75 * Math.max(xMax, -xMin);
+  camera.position.y = 1.75 * Math.max(yMax, -yMin);
+  camera.position.z = 1.75 * Math.max(zMax, -zMin);
 
 //renderer stuff
   var renderer = new THREE.WebGLRenderer();
@@ -94,7 +87,6 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     // if not ...
     else{
       var colorObj = { color: parseInt('0x'+color) };
-      console.log(colorObj)
     }
     return colorObj;
   }
@@ -161,25 +153,42 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   if(zMin < 0) scene.add(liner(0,0,zMin,matNeg));
 
 
-  // axis labels (not complete)
-  function axisLabel(text,positionObj){
+  // axis labels
+  function axisLabel(text,posObj){
     var params = {
       font:'helvetiker',
-      size:10,
+      height:baseSize,
+      size:baseSize*3,
       weight:'normal',
       style:'normal',
-      height:1
     }
-    var axisLabel = new THREE.TextGeometry(text,params);
+    var labelGeo = new THREE.TextGeometry(text,params);
+    setTimeout(function(){
+      console.log(labelGeo) //translation
+      word.position.x = (posObj.x < 0) ? posObj.x - labelGeo.boundingSphere.radius*2: posObj.x;
+      word.position.y = (posObj.y < 0) ? posObj.y - labelGeo.boundingSphere.radius/3: posObj.y;
+      word.position.z = posObj.z;
+    },100)
     var wrap = new THREE.MeshLambertMaterial({color:0x000000});
-    var word = new THREE.Mesh(axisLabel,wrap);
-    word.position.x = positionObj.x;
-    word.position.y = positionObj.y;
-    word.position.z = positionObj.z;
+    var word = new THREE.Mesh(labelGeo,wrap);
     scene.add(word);
   }
 
-  axisLabel('xAxis', {x:10,y:0,z:0})
+  // axis label text
+  var xLab = (typeof config.xLab === 'undefined') ? 'X = '+xMax : config.xLab+' = '+xMax;
+  var yLab = (typeof config.yLab === 'undefined') ? 'Y = '+yMax : config.yLab+' = '+yMax;
+  var zLab = (typeof config.zLab === 'undefined') ? 'Z = '+zMax : config.zLab+' = '+zMax;
+
+  //positive labels
+  if(xMax > 0) axisLabel(xLab, {x:xMax,y:0,z:0});
+  if(yMax > 0) axisLabel(yLab, {x:0,y:yMax,z:0});
+  if(zMax > 0) axisLabel(zLab, {x:0,y:0,z:zMax});
+  // //negative labels
+  if(xMin < 0) axisLabel(xLab, {x:xMin,y:0,z:0});
+  if(yMin < 0) axisLabel(yLab, {x:0,y:yMin,z:0});
+  if(zMin < 0) axisLabel(zLab, {x:0,y:0,z:zMin});
+
+
 
   // axis tickers
   //CREATE THE TICKS HERE ...
