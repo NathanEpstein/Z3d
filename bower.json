@@ -1,7 +1,7 @@
 {
-  "name": "zed",
+  "name": "z3d",
   "version": "0.0.1",
-  "homepage": "https://github.com/NathanEpstein/3dPlot",
+  "homepage": "https://github.com/NathanEpstein/z3d",
   "authors": [
     "nepstein <ne2210@columbia.edu>"
   ],
