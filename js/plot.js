@@ -32,8 +32,8 @@ var plot3d = function(arrX, arrY,arrZ,config) {
 
   // spotlight stuff
   var spotLight = new THREE.SpotLight( 0xffffff );
-  spotLight.position.set( 100, 1000, 100 );
-  spotLight.castShadow = true;
+  spotLight.position.set( 0, yMax * 50, 0);
+  spotLight.castShadow = false;
   spotLight.shadowMapWidth = 1024;
   spotLight.shadowMapHeight = 1024;
   spotLight.shadowCameraNear = 500;
@@ -80,9 +80,9 @@ var plot3d = function(arrX, arrY,arrZ,config) {
 
   // generate points
   function getColorObj(color){
-    // is color defined in config?
+    // is color undefined in config?
     if (typeof color === 'undefined'){
-      var colorObj = (typeof config.size === 'undefined') ? {color:0x000000} : {color:0x999999};
+      var colorObj = (typeof config.size === 'undefined') ? {color:0x000000} : {color:0x7EC0EE};
     }
     // if not ...
     else{
@@ -164,7 +164,6 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     }
     var labelGeo = new THREE.TextGeometry(text,params);
     setTimeout(function(){
-      console.log(labelGeo) //translation
       word.position.x = (posObj.x < 0) ? posObj.x - labelGeo.boundingSphere.radius*2: posObj.x;
       word.position.y = (posObj.y < 0) ? posObj.y - labelGeo.boundingSphere.radius/3: posObj.y;
       word.position.z = posObj.z;
@@ -174,19 +173,27 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     scene.add(word);
   }
 
-  // axis label text
-  var xLab = (typeof config.xLab === 'undefined') ? 'X = '+xMax : config.xLab+' = '+xMax;
-  var yLab = (typeof config.yLab === 'undefined') ? 'Y = '+yMax : config.yLab+' = '+yMax;
-  var zLab = (typeof config.zLab === 'undefined') ? 'Z = '+zMax : config.zLab+' = '+zMax;
+  function rounder(num){
+    return Math.round(num*100)/100;
+  }
+  // axis label text (for max)
+  var xLab = (typeof config.xLab === 'undefined') ? 'X = '+rounder(xMax) : config.xLab+' = '+rounder(xMax);
+  var yLab = (typeof config.yLab === 'undefined') ? 'Y = '+rounder(yMax) : config.yLab+' = '+rounder(yMax);
+  var zLab = (typeof config.zLab === 'undefined') ? 'Z = '+rounder(zMax) : config.zLab+' = '+rounder(zMax);
+
+  // axis label text (for min)
+  var xLabMin = (typeof config.xLab === 'undefined') ? 'X = '+rounder(xMin) : config.xLab+' = '+rounder(xMin);
+  var yLabMin = (typeof config.yLab === 'undefined') ? 'Y = '+rounder(yMin) : config.yLab+' = '+rounder(yMin);
+  var zLabMin = (typeof config.zLab === 'undefined') ? 'Z = '+rounder(zMin) : config.zLab+' = '+rounder(zMin);
 
   //positive labels
   if(xMax > 0) axisLabel(xLab, {x:xMax,y:0,z:0});
   if(yMax > 0) axisLabel(yLab, {x:0,y:yMax,z:0});
   if(zMax > 0) axisLabel(zLab, {x:0,y:0,z:zMax});
   // //negative labels
-  if(xMin < 0) axisLabel(xLab, {x:xMin,y:0,z:0});
-  if(yMin < 0) axisLabel(yLab, {x:0,y:yMin,z:0});
-  if(zMin < 0) axisLabel(zLab, {x:0,y:0,z:zMin});
+  if(xMin < 0) axisLabel(xLabMin, {x:xMin,y:0,z:0});
+  if(yMin < 0) axisLabel(yLabMin, {x:0,y:yMin,z:0});
+  if(zMin < 0) axisLabel(zLabMin, {x:0,y:0,z:zMin});
 
 
 
