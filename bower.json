@@ -1,0 +1,26 @@
+{
+  "name": "zed",
+  "version": "0.0.1",
+  "homepage": "https://github.com/NathanEpstein/3dPlot",
+  "authors": [
+    "nepstein <ne2210@columbia.edu>"
+  ],
+  "description": "simple visualization for 3 to 5 dimensional data built on three.js",
+  "main": "/js/plot.js",
+  "keywords": [
+    "3d",
+    "data",
+    "visualization"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "threejs": "*"
+  }
+}

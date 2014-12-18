@@ -195,14 +195,6 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   if(yMin < 0) axisLabel(yLabMin, {x:0,y:yMin,z:0});
   if(zMin < 0) axisLabel(zLabMin, {x:0,y:0,z:zMin});
 
-
-
-  // axis tickers
-  //CREATE THE TICKS HERE ...
-
-
-
-
   //end of axes
 
 
