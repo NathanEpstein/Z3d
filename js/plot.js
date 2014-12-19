@@ -200,13 +200,12 @@ var plot3d = function(arrX, arrY,arrZ,config) {
 
   //render function
   function render(){
-    //requestAnimationFrame(render);
     renderer.render(scene,camera);
   }
   render();
 
-  //function should return the DOM element containing the plot
-  return renderer.domElement;
+  //function should return the THREE scene
+  return scene;
 };
 
 
