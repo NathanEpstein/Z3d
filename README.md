@@ -10,7 +10,7 @@ Basic function call generates a X-Y-Z scatter plot. Optional configuration objec
 
 ## Install
 
-`bower install z3d --save`
+`bower install z3d`
 
 ## Usage
 Why use Z3d? Because configuration is optional, **an interactive 3d plot with sensible defaults can be generated with as little as a single line.**
