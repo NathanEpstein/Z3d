@@ -1,4 +1,4 @@
-Z3d
+![Z3d](https://raw.githubusercontent.com/NathanEpstein/z3d/master/logo.png)
 ===
 ![Example](https://raw.githubusercontent.com/NathanEpstein/z3d/master/example.png)
 
