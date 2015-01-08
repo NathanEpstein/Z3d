@@ -43,7 +43,7 @@ Plotting function takes the data to plot and an optional configuration object.
 
 ###Example With Configuration
 
-We can add a configuration object to the example above to modify the height/width of our plot, the DOM element the visualization is appended to, the size of the points plotted, and the color of the points plotted.
+We can add a configuration object to the example above to modify the height/width of our plot, the DOM element the visualization is appended to, the labels on the points plotted, the size of the points plotted, and the color of the points plotted.
 
 ```html
 <html>
@@ -61,6 +61,10 @@ We can add a configuration object to the example above to modify the height/widt
       var y = [-1.4166, 1.353, -0.6294, 0.0567, 1.4157, 0.32806, 0.2377, -0.2262, -1.0602, -1.8150, 0.1075, -1.3516, 1.0137, 0.0183, -0.5466, 0.6416, -0.6655, 0.6874, -0.4616, -0.2808, 1.3443, -1.0518, -0.1332, -1.0097, 0.3643];
       var z = [1.4166, -1.353, 0.6294, -0.0567, -1.4157, -0.32806, -0.2377, 0.2262, 1.0602, -1.5089, 0.1543, -0.3516, 0.0137, 1.0183, 1.5466, -1.6416, 1.6655, -1.6874, -0.4616, -1.2808, -1.3443, 1.0518, -0.1332, 1.9700, -0.3643];
 
+      var labs = [];
+      z.forEach(function(el,i){
+        labs.push('label '+i);
+      });
 
       //make a function to generate random colors for the points in our example
       function getHexColor(){
@@ -85,6 +89,7 @@ We can add a configuration object to the example above to modify the height/widt
       var config = {
         size: sizes,
         color: colors,
+        label: labs,
         //height and width of the DOM element
         height: 400,
         width: 400,
