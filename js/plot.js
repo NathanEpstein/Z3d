@@ -91,7 +91,11 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     return colorObj;
   }
 
-  function point(a,b,c,size,color){
+  function point(a,b,c,size,color,lab){
+    //if there's a label, add a point to that location
+    if (typeof lab !== 'undefined'){
+      makeWord(lab,{x:a,y:b+size+baseSize*(3/2),z:c},baseSize/2)
+    }
     var geometry = new THREE.SphereGeometry(size,15,15);
     var material = new THREE.MeshLambertMaterial(getColorObj(color));
     var sphere = new THREE.Mesh(geometry, material);
@@ -119,7 +123,13 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     else{
       var color = undefined;
     }
-    scene.add(point(arrX[i],arrY[i],arrZ[i],size,color));
+    if (typeof config.label !== 'undefined'){
+      var lab = config.label[i];
+    }
+    else {
+      var lab = '';
+    }
+    scene.add(point(arrX[i],arrY[i],arrZ[i],size,color,lab));
   };
   //end of point generation
 
@@ -153,12 +163,12 @@ var plot3d = function(arrX, arrY,arrZ,config) {
   if(zMin < 0) scene.add(liner(0,0,zMin,matNeg));
 
 
-  // axis labels
-  function axisLabel(text,posObj){
+  // makeWord function
+  function makeWord(text,posObj,wordSize){
     var params = {
       font:'helvetiker',
-      height:baseSize,
-      size:baseSize*3,
+      height:wordSize,
+      size:wordSize*3,
       weight:'normal',
       style:'normal',
     }
@@ -171,6 +181,11 @@ var plot3d = function(arrX, arrY,arrZ,config) {
     var wrap = new THREE.MeshLambertMaterial({color:0x000000});
     var word = new THREE.Mesh(labelGeo,wrap);
     scene.add(word);
+  }
+
+  // axis labels
+  function axisLabel(text,posObj){
+    makeWord(text,posObj,baseSize);
   }
 
   function rounder(num){
